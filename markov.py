@@ -26,20 +26,23 @@ def make_text(chains):
     """Takes a dictionary of markov chains and returns random text
     based off an original text."""
 
-    start_key = random.sample(chains, 1)
-    start_key = start_key[0]
-    index = 0 #random.randint(0, len(chains[start_key]))
-    next_word = chains[start_key][index]
-    random_words = [start_key[0], start_key[1], next_word]
+
     i = 0
+    next_word = ''
 
     while next_word != 'the end' and i < 5:
+        the_key = random.sample(chains, 1)
+        the_key = the_key[0]
+        get_words = chains.get(the_key, ['the end'])
+        print get_words
+        index = random.randint(0, len(get_words)-1)
+        print index
+        #print start_key, index
+        next_word = get_words[index]
+        # print next_word
+        random_words = [the_key[0], the_key[1], next_word]
         new_key = (random_words[-2], random_words[-1])
-        #print type(new_key)
-        #index = random.randint(0, len(chains[new_key])-1)
-        #print type(chains[new_key])
-        next_word = chains.get(new_key, ['the end'])
-        next_word = next_word[0]
+        the_key = new_key
         random_words.append(next_word)
         i += 1
 
