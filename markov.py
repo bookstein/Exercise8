@@ -29,32 +29,41 @@ def make_text(chains):
 
     i = 0
     next_word = ''
+    the_key = random.sample(chains, 1)
+    the_key = the_key[0]
+    random_words = [the_key[0], the_key[1]]
 
     while next_word != 'the end' and i < 5:
-        the_key = random.sample(chains, 1)
-        the_key = the_key[0]
+
         get_words = chains.get(the_key, ['the end'])
-        print get_words
+        
+        #weighted_words = assign_weights(get_words)
+
         index = random.randint(0, len(get_words)-1)
-        print index
-        #print start_key, index
+        
         next_word = get_words[index]
-        # print next_word
-        random_words = [the_key[0], the_key[1], next_word]
+        print next_word
+        random_words.append(next_word)
         new_key = (random_words[-2], random_words[-1])
         the_key = new_key
-        random_words.append(next_word)
+        print the_key
+        print random_words
         i += 1
 
     random_text = " ".join(random_words)
     return random_text
 
-    #value = random.sample(chains[start_key], 1)
-    #print start_key, type(start_key)
-    #print chains[start_key], type(start_key)
-    # print start_key, next_word, random_text
+# def assign_weights(word_list):
 
-    # return "Here's some random text."
+#     freq = {}
+
+#     for word in word_list:
+#         freq[word] = freq.get(word, 0) + 1.0
+          
+#     for word in freq.keys():
+#        freq[word] = freq[word]/len(word_list)
+
+#     return freq
 
 def main():
     args = sys.argv
