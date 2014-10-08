@@ -22,16 +22,23 @@ def create_dictionary(filename):
 		dictionary.setdefault(
 			(word_list[index], word_list[index+1]),[]).append(word_list[index+2])
 
-	# print dictionary
+	return dictionary
+
+def create_random_text(dictionary):
+	#select 'random' key
+	random_key = random.sample(dictionary.keys(), 1)
+	print random_key
+
+	#select 'random' list element in list associated with key
 
 
 
 def main():
-script, filename = argv
+	script, filename = argv
 
-create_dictionary(filename)
+	dictionary = create_dictionary(filename)
 	random_text = create_random_text(dictionary)
-	print random_text
+	# print random_text
 
 
 if __name__ == "__main__":
