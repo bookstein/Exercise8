@@ -61,7 +61,8 @@ def make_text(chains):
     the_key = the_key[0]
     random_words = [the_key[0], the_key[1]]
 
-    num_chars = 0
+    num_chars = len(" ".join(random_words))
+
     while next_word != 'the end' and num_chars < 130:
 
         get_words = chains.get(the_key, ['the end'])
@@ -80,6 +81,8 @@ def make_text(chains):
         print num_chars
 
     random_text = " ".join(random_words)
+    if random_text[-1] not in enders:
+        random_text = random_text + '.'
     return random_text
 
 def main():
@@ -93,7 +96,8 @@ def main():
                      access_token_key=os.environ.get('TWITTER_ACCESS_TOKEN'),
                      access_token_secret=os.environ.get('TWITTER_SECRET_TOKEN'))
 
-    api.PostUpdate(random_text)
+    # api.PostUpdate(random_text)
+    print random_text
 
 if __name__ == "__main__":
     main()
