@@ -8,11 +8,11 @@ import twitter
 
 word_choices = {}
 
-def read_in_files(directory):
+def read_in_files(directory, n):
 
     files = os.listdir(directory)
     for textfile in files:
-        make_chains(directory, textfile)
+        make_chains(directory, textfile, n)
 
 
 # read_in_files("sourcetext")
@@ -36,15 +36,14 @@ def make_chains(directory, corpus, n):
         start_key = ()
         for j in range(n):
             start_key = start_key + (words[i+j],)
-        print type(start_key)
+        # print type(start_key)
         word_choices.setdefault(start_key, []).append(words[i+n])
 
-    print word_choices
+    # print word_choices
 
     # return word_choices
-make_chains('.', 'greeneggs.txt', 3)
 
-def make_text(chains):
+def make_text(chains, n):
     """Takes a dictionary of markov chains and returns random text
     based off an original text."""
 
@@ -57,15 +56,20 @@ def make_text(chains):
 
     key_string = " "
 
+    random_words = []
+
     while key_string[0] not in starters:
+        # random.sample returns a list with tuple inside it
         the_key = random.sample(chains, 1)
         key_string = the_key[0][0]
         # the_key = the_key[0]
         # print key_string
 
-    # the_key = random.sample(chains, 1)
+    # the_key is now the tuple with n words in it (takes tuple out of list)
     the_key = the_key[0]
-    random_words = [the_key[0], the_key[1]]
+
+    for word in the_key:
+        random_words.append(word)
 
     num_chars = len(" ".join(random_words))
 
@@ -80,11 +84,14 @@ def make_text(chains):
 
         if next_word[-1] in enders:
             break
-        new_key = (random_words[-2], random_words[-1])
+        
+        new_key = ()
+        for word in random_words[-n:]:  
+            new_key = new_key + (word,)
         the_key = new_key
 
         num_chars += (len(next_word) + 1)
-        print num_chars
+        # print num_chars
 
     random_text = " ".join(random_words)
     if random_text[-1] not in enders:
@@ -92,10 +99,11 @@ def make_text(chains):
     return random_text
 
 def main():
-    script, directory = sys.argv
+    script, directory, n = sys.argv
+    n = int(n)
 
-    #read_in_files(directory)
-    #random_text = make_text(word_choices)
+    read_in_files(directory, n)
+    random_text = make_text(word_choices, n)
 
     api = twitter.Api(consumer_key=os.environ.get('TWITTER_API_KEY'),
                      consumer_secret=os.environ.get('TWITTER_SECRET_KEY'),
