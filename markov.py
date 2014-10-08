@@ -45,7 +45,7 @@ def make_text(chains):
     starters = string.ascii_uppercase
 
 
-    i = 0
+    
     next_word = ''
 
     key_string = " "
@@ -60,7 +60,8 @@ def make_text(chains):
     the_key = the_key[0]
     random_words = [the_key[0], the_key[1]]
 
-    while next_word != 'the end' and i < 200:
+    num_chars = 0
+    while next_word != 'the end' and num_chars < 140:
 
         get_words = chains.get(the_key, ['the end'])
 
@@ -73,7 +74,8 @@ def make_text(chains):
             break
         new_key = (random_words[-2], random_words[-1])
         the_key = new_key
-        i += 1
+        
+        num_chars += len(next_word)
 
     random_text = " ".join(random_words)
     return random_text
