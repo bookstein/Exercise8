@@ -2,6 +2,7 @@
 
 import sys
 import random
+import string
 
 def make_chains(corpus):
     
@@ -27,10 +28,22 @@ def make_text(chains):
     """Takes a dictionary of markov chains and returns random text
     based off an original text."""
 
+    enders = '.?!"\''
+    starters = string.ascii_uppercase
+
 
     i = 0
     next_word = ''
-    the_key = random.sample(chains, 1)
+
+    key_string = " "
+
+    while key_string[0] not in starters:
+        the_key = random.sample(chains, 1)
+        key_string = the_key[0][0]
+        # the_key = the_key[0]
+        # print key_string
+
+    # the_key = random.sample(chains, 1)
     the_key = the_key[0]
     random_words = [the_key[0], the_key[1]]
 
@@ -42,6 +55,9 @@ def make_text(chains):
         
         next_word = get_words[index]
         random_words.append(next_word)
+
+        if next_word[-1] in enders:
+            break
         new_key = (random_words[-2], random_words[-1])
         the_key = new_key
         i += 1
