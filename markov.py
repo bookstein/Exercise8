@@ -18,7 +18,7 @@ def read_in_files(directory):
 # read_in_files("sourcetext")
 
 
-def make_chains(directory, corpus):
+def make_chains(directory, corpus, n):
     
     # word_choices = {}
 
@@ -29,14 +29,20 @@ def make_chains(directory, corpus):
     words = start_text.strip().split()
 
     #print words
+    
+    #print type(start_key)
 
-    for i in range(len(words)-2):
-        word_choices.setdefault(
-            (words[i], words[i+1]), []).append(words[i+2])
+    for i in range(len(words)-n):
+        start_key = ()
+        for j in range(n):
+            start_key = start_key + (words[i+j],)
+        print type(start_key)
+        word_choices.setdefault(start_key, []).append(words[i+n])
 
-    # print word_choices
+    print word_choices
 
     # return word_choices
+make_chains('.', 'greeneggs.txt', 3)
 
 def make_text(chains):
     """Takes a dictionary of markov chains and returns random text
@@ -88,8 +94,8 @@ def make_text(chains):
 def main():
     script, directory = sys.argv
 
-    read_in_files(directory)
-    random_text = make_text(word_choices)
+    #read_in_files(directory)
+    #random_text = make_text(word_choices)
 
     api = twitter.Api(consumer_key=os.environ.get('TWITTER_API_KEY'),
                      consumer_secret=os.environ.get('TWITTER_SECRET_KEY'),
