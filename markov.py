@@ -4,6 +4,7 @@ import sys
 import random
 import string
 import os
+import twitter
 
 word_choices = {}
 
@@ -61,7 +62,7 @@ def make_text(chains):
     random_words = [the_key[0], the_key[1]]
 
     num_chars = 0
-    while next_word != 'the end' and num_chars < 140:
+    while next_word != 'the end' and num_chars < 130:
 
         get_words = chains.get(the_key, ['the end'])
 
@@ -74,8 +75,9 @@ def make_text(chains):
             break
         new_key = (random_words[-2], random_words[-1])
         the_key = new_key
-        
-        num_chars += len(next_word)
+
+        num_chars += (len(next_word) + 1)
+        print num_chars
 
     random_text = " ".join(random_words)
     return random_text
@@ -85,7 +87,13 @@ def main():
 
     read_in_files(directory)
     random_text = make_text(word_choices)
-    print random_text
+
+    api = twitter.Api(consumer_key=os.environ.get('TWITTER_API_KEY'),
+                     consumer_secret=os.environ.get('TWITTER_SECRET_KEY'),
+                     access_token_key=os.environ.get('TWITTER_ACCESS_TOKEN'),
+                     access_token_secret=os.environ.get('TWITTER_SECRET_TOKEN'))
+
+    api.PostUpdate(random_text)
 
 if __name__ == "__main__":
     main()
