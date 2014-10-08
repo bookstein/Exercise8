@@ -3,12 +3,25 @@
 import sys
 import random
 import string
+import os
 
-def make_chains(corpus):
+word_choices = {}
+
+def read_in_files(directory):
+
+    files = os.listdir(directory)
+    for textfile in files:
+        make_chains(directory, textfile)
+
+
+# read_in_files("sourcetext")
+
+
+def make_chains(directory, corpus):
     
-    word_choices = {}
+    # word_choices = {}
 
-    text = open(corpus)
+    text = open(directory + "/" + corpus)
     start_text = text.read()
     text.close()
 
@@ -22,7 +35,7 @@ def make_chains(corpus):
 
     # print word_choices
 
-    return word_choices
+    # return word_choices
 
 def make_text(chains):
     """Takes a dictionary of markov chains and returns random text
@@ -66,10 +79,10 @@ def make_text(chains):
     return random_text
 
 def main():
-    script, filename = sys.argv
+    script, directory = sys.argv
 
-    chain_dict = make_chains(filename)
-    random_text = make_text(chain_dict)
+    read_in_files(directory)
+    random_text = make_text(word_choices)
     print random_text
 
 if __name__ == "__main__":
