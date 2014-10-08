@@ -27,10 +27,12 @@ def create_dictionary(filename):
 def create_random_text(dictionary):
 	#select 'random' key
 	random_key = random.sample(dictionary.keys(), 1)
-	print random_key
+	key_tuple = random_key[0]
+	print key_tuple
 
 	#select 'random' list element in list associated with key
-
+	word_list = dictionary[key_tuple]
+	random_index = random.randint(0, len(word_list))
 
 
 def main():
