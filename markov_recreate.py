@@ -25,15 +25,24 @@ def create_dictionary(filename):
 	return dictionary
 
 def create_random_text(dictionary):
+	random_words_list = []
 	#select 'random' key
 	random_key = random.sample(dictionary.keys(), 1)
 	key_tuple = random_key[0]
-	print key_tuple
+	# print key_tuple
+
+	# LOOP
 
 	#select 'random' list element in list associated with key
 	word_list = dictionary[key_tuple]
-	random_index = random.randint(0, len(word_list))
+	random_index = random.randint(0, len(word_list)-1) # why is it -1?
+	next_word = word_list[random_index]
+	random_words_list.append(next_word)
+	print random_words_list
 
+	# set new key to be the last words of random_words_list
+	# new_key = (random_words_list[-1])
+	# print new_key
 
 def main():
 	script, filename = argv
