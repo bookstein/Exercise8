@@ -48,7 +48,7 @@ def make_text(chains, n):
     enders = '.?!"\''
     starters = string.ascii_uppercase
 
-    #initializes empty string for the next word in the text, 
+    #initializes empty string for the next word in the text,
     # initializes an empty string for the key's first word, and
     # initializes and empty list which will hold the random text
     next_word = ''
@@ -79,7 +79,7 @@ def make_text(chains, n):
 
         # chooses a random integer less than length of get_words
         index = random.randint(0, len(get_words)-1)
-        
+
         # use the random index number to choose from the list of possible next words
         next_word = get_words[index]
         random_words.append(next_word)
@@ -87,11 +87,11 @@ def make_text(chains, n):
         # if the last character in next_word is punctuation - break while loop
         if next_word[-1] in enders:
             break
-        
+
         # initialize a new tuple
         new_key = ()
         # loops over the last n values in random_words
-        for word in random_words[-n:]:  
+        for word in random_words[-n:]:
             # concatenates each new word to new_key
             new_key = new_key + (word,)
         # set the next key to new key
@@ -112,20 +112,36 @@ def main():
     script, directory, n = sys.argv
     n = int(n)
 
-    # pass the file to read files
-    read_in_files(directory, n)
-    # pass everything to make text so we can random_text
-    random_text = make_text(word_choices, n)
-
     #set twitter api keys and tokens
     api = twitter.Api(consumer_key=os.environ.get('TWITTER_API_KEY'),
                      consumer_secret=os.environ.get('TWITTER_SECRET_KEY'),
                      access_token_key=os.environ.get('TWITTER_ACCESS_TOKEN'),
                      access_token_secret=os.environ.get('TWITTER_SECRET_TOKEN'))
 
-    # post random text to twitter
-    api.PostUpdate(random_text)
-    #print random_text
+    while True:
+        # pass the file to read files
+        read_in_files(directory, n)
+        # pass everything to make text so we can random_text
+        random_text = make_text(word_choices, n)
+
+        # post random text to twitter
+        print random_text
+        print "\n\n"
+
+        print "post this to twitter? (y/n)"
+        answer = raw_input()
+        if answer == 'y':
+            api.PostUpdate(random_text)
+
+        print "run again? (y/n)"
+        answer2 = raw_input()
+        if answer2 == 'y':
+            continue
+        elif answer2 == "n":
+            break
+        else:
+            print "I only understand y or n! Quitting."
+            break
 
 if __name__ == "__main__":
     main()
